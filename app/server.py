@@ -16,12 +16,22 @@ classes = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
 path = Path(__file__).parent
 
 app = Starlette()
+<<<<<<< HEAD
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_headers=['X-Requested-With', 'Content-Type'])
+=======
+app.add_middleware(CORSMiddleware, allow_origins=[
+                   '*'], allow_headers=['X-Requested-With', 'Content-Type'])
+>>>>>>> jsdnv
 app.mount('/static', StaticFiles(directory='app/static'))
 
 
 async def download_file(url, dest):
+<<<<<<< HEAD
     if dest.exists(): return
+=======
+    if dest.exists():
+        return
+>>>>>>> jsdnv
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             data = await response.read()
@@ -64,6 +74,42 @@ async def analyze(request):
     return JSONResponse({'result': str(prediction)})
 
 
+<<<<<<< HEAD
+=======
+@app.route('/predict', methods=['POST'])
+def predict():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            print("xwe so bad")
+            return jsonify({'error': "No file found"})
+    user_file = request.files['file']
+    if user_file.filename == '':
+        print("xwe p bad")
+        return jsonify({'error': 'No file name found'})
+    else:
+        path = os.path.join(
+            os.getcwd()+'/img/'+user_file.filename)
+        user_file.save(path)
+
+        print("YEET we good")
+        # classes = identifyImage(path) TODO 
+
+        # save image details to database
+        # db.addNewImage(
+        #     user_file.filename,
+        #     classes[0][0][1],
+        #     str(classes[0][0][2]),
+        #     datetime.now(),
+        #     UPLOAD_URL+user_file.filename)
+        
+        return jsonify({
+            'type': 'recycle',
+            'material': 'plastic',
+            "confidence": 0.997
+        })
+
+>>>>>>> jsdnv
 if __name__ == '__main__':
     if 'serve' in sys.argv:
         uvicorn.run(app=app, host='0.0.0.0', port=5000, log_level="info")
