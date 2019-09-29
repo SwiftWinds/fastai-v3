@@ -69,7 +69,7 @@ async def analyze(request):
 
 
 @app.route('/identify-trash', methods=['POST'])
-def identify_trash(request):
+async def identify_trash(request):
     img_data = await request.form()
     print(img_data)
     return jsonify({
