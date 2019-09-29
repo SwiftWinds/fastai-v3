@@ -9,6 +9,8 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
+from flask import Flask, render_template, request, jsonify
+
 export_file_url = 'https://www.googleapis.com/drive/v3/files/17bEwiC-XaRoMSYYBBhV2FdvHVa-BNKlX?alt=media&key=AIzaSyBCQLh8-VOPFr6TiN3VJQPmhd5NxXReofc'
 export_file_name = 'export.pkl'
 
@@ -16,22 +18,14 @@ classes = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
 path = Path(__file__).parent
 
 app = Starlette()
-<<<<<<< HEAD
-app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_headers=['X-Requested-With', 'Content-Type'])
-=======
 app.add_middleware(CORSMiddleware, allow_origins=[
                    '*'], allow_headers=['X-Requested-With', 'Content-Type'])
->>>>>>> jsdnv
 app.mount('/static', StaticFiles(directory='app/static'))
 
 
 async def download_file(url, dest):
-<<<<<<< HEAD
-    if dest.exists(): return
-=======
     if dest.exists():
         return
->>>>>>> jsdnv
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             data = await response.read()
@@ -74,8 +68,6 @@ async def analyze(request):
     return JSONResponse({'result': str(prediction)})
 
 
-<<<<<<< HEAD
-=======
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.method == 'POST':
@@ -109,7 +101,6 @@ def predict():
             "confidence": 0.997
         })
 
->>>>>>> jsdnv
 if __name__ == '__main__':
     if 'serve' in sys.argv:
         uvicorn.run(app=app, host='0.0.0.0', port=5000, log_level="info")
