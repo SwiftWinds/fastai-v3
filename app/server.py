@@ -68,6 +68,17 @@ async def analyze(request):
     return JSONResponse({'result': str(prediction)})
 
 
+@app.route('/identify-trash', methods=['POST'])
+def identify_trash(request):
+    img_data = await request.form()
+    print(img_data)
+    return jsonify({
+        'type': 'recycle',
+        'material': 'plastic',
+        "confidence": 0.997
+    })
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.method == 'POST':
@@ -85,7 +96,7 @@ def predict():
         user_file.save(path)
 
         print("YEET we good")
-        # classes = identifyImage(path) TODO 
+        # classes = identifyImage(path) TODO
 
         # save image details to database
         # db.addNewImage(
@@ -94,12 +105,13 @@ def predict():
         #     str(classes[0][0][2]),
         #     datetime.now(),
         #     UPLOAD_URL+user_file.filename)
-        
+
         return jsonify({
             'type': 'recycle',
             'material': 'plastic',
             "confidence": 0.997
         })
+
 
 if __name__ == '__main__':
     if 'serve' in sys.argv:
