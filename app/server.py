@@ -1,6 +1,8 @@
 import aiohttp
 import asyncio
 import uvicorn
+import os
+
 from fastai import *
 from fastai.vision import *
 from io import BytesIO
@@ -8,6 +10,7 @@ from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
+from PIL import Image
 
 from flask import Flask, render_template, request, jsonify
 
@@ -64,7 +67,10 @@ async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
+    img.save('analysis.png')
+    img = open_image('analysis.png')
     prediction = learn.predict(img)[0]
+    os.remove("analysis.png")
     return JSONResponse({'result': str(prediction)})
 
 
